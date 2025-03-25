@@ -18,9 +18,13 @@ export class ModelsController {
   }
 
   // Get Model by ID
+  // @Get(':id')
+  // async getModelById(@Param('id') id: string) {
+  //   return this.modelsService.getModelWithDetails(id);
+  // }
   @Get(':id')
   async getModelById(@Param('id') id: string) {
-    return this.modelsService.getModelWithDetails(id);
+    return this.modelsService.getModelById(id);
   }
 
   // Update Model

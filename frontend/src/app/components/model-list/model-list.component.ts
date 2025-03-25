@@ -1,32 +1,32 @@
-import { Component, OnInit } from '@angular/core'; // ✅ Import OnInit
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../services/api.service'; // ✅ Import ApiService
-import { Observable } from 'rxjs';
-import { RouterModule } from '@angular/router'; // ✅ Import RouterModule
-
+import { RouterModule } from '@angular/router';
 
 @Component({
-  standalone: true, 
   selector: 'app-model-list',
+  standalone: true,
   templateUrl: './model-list.component.html',
   styleUrls: ['./model-list.component.css'],
   imports: [CommonModule, RouterModule]
 })
 export class ModelListComponent implements OnInit {
-  models: any[] = []; // ✅ Define models property
+  models: any[] = [];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    console.log('Fetching models...');
+    this.fetchModels();
+  }
 
+  fetchModels(): void {
     this.apiService.getModels().subscribe({
-      next: (data: any) => { // ✅ Explicitly define type
-        console.log('API Data:', data);
-        this.models = data;
+      next: (data) => {
+        console.log('Fetched Models:', data);
+        this.models = data; // ✅ Ensure models have variants inside
       },
-      error: (error: any) => { // ✅ Explicitly define type
-        console.error('API Error:', error);
+      error: (error) => {
+        console.error('Error fetching models:', error);
       }
     });
   }

@@ -1,13 +1,39 @@
 <h2>{{ model?.name }} - {{ model?.brand }}</h2>
 <p><strong>Description:</strong> {{ model?.description }}</p>
-<!-- <p><strong>Price:</strong> ${{ model?.price }}</p> -->
+<p><strong>Price:</strong> ${{ model?.price }}</p>
 
 <!-- Variants Section -->
 <h3>🚗 Available Variants</h3>
 <div *ngIf="variants.length > 0; else noVariants">
   <ul>
     <li *ngFor="let variant of variants">
-      <strong>{{ variant.name }}</strong> - ${{ variant.price }}
+      <h4>{{ variant.name }} - ${{ variant.price }}</h4>
+
+      <!-- Colors -->
+      <h5>🎨 Available Colors:</h5>
+      <ul>
+        <li *ngFor="let color of variant.colors">
+          <span [style.background]="color.hexCode" class="color-box"></span>
+          {{ color.name }} - ${{ color.price }}
+        </li>
+      </ul>
+
+      <!-- Accessories -->
+      <h5>🛠 Accessories:</h5>
+      <div class="accessory-grid">
+        <img *ngFor="let accessory of variant.accessories" [src]="accessory" class="accessory-img">
+      </div>
+
+      <!-- Features -->
+      <h5>📸 Features:</h5>
+      <div class="feature-grid">
+        <ng-container *ngFor="let feature of variant.features">
+          <img *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" class="feature-img">
+          <video *ngIf="feature.type === 'video'" controls class="feature-video">
+            <source [src]="feature.mediaUrl" type="video/mp4">
+          </video>
+        </ng-container>
+      </div>
     </li>
   </ul>
 </div>
@@ -15,21 +41,5 @@
   <p>No variants available.</p>
 </ng-template>
 
-<!-- Features Section -->
-<h3>📸 Features</h3>
-<div *ngIf="features.length > 0; else noFeatures">
-  <ul>
-    <li *ngFor="let feature of features">
-      <strong>{{ feature.type }}</strong>: 
-      <a *ngIf="feature.media_url" [href]="feature.media_url" target="_blank">View</a>
-    </li>
-  </ul>
-</div>
-<ng-template #noFeatures>
-  <p>No features available.</p>
-</ng-template>
-
 <!-- Back Button -->
-<!-- <a routerLink="/" class="back-button">🔙 Back to Models</a> -->
 <button (click)="goBack()" class="back-button">🔙 Back to Models</button>
-

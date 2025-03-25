@@ -1,26 +1,40 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 
-@Schema()
-export class Model extends Document {
-  @Prop({ required: true })
+// ✅ Define Sub-Schemas (Embedded inside Variant)
+export interface Color {
   name: string;
-
-  @Prop()
-  brand: string;
-
-  @Prop()
-  description: string;
-
-  @Prop({ type: [{ type: String }] }) // Array of Variant IDs
-  variants: string[];
-
-  // @Prop({ type: [{ type: Number }] }) // Array of Variant IDs
-  // price: number;
+  price: number;
+  hexCode: string;
 }
 
-// Generate Mongoose schema
-export const ModelSchema = SchemaFactory.createForClass(Model);
+export interface Feature {
+  type: 'image' | 'video';
+  mediaUrl: string;
+}
 
-// Export ModelDocument correctly
-export type ModelDocument = Model & Document;
+export interface VariantDocument extends Document {
+  name: string;
+  price: number;
+  colors: Color[];
+  accessories: string[]; // Array of image URLs
+  features: Feature[];
+}
+
+// ✅ Main Model Interface
+export interface ModelDocument extends Document {
+  _id: string;
+  name: string;
+  brand: string;
+  description: string;
+  price: number;
+}
+
+// ✅ Model Schema (Stores Variant References)
+export const ModelSchema = new Schema<ModelDocument>({
+  name: { type: String, required: true },
+  brand: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true }
+});
+// ✅ Export Model
+export const Model = model<ModelDocument>('Model', ModelSchema);

@@ -1,26 +1,63 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 
-@Schema()
-export class Variant extends Document {
-  @Prop({ required: true })
-  model_id: string;
-
-  @Prop({ required: true })
+// ✅ Define Sub-Schemas
+export interface Color {
   name: string;
-
-  @Prop({ required: true })
   price: number;
-
-  @Prop({ type: [String] }) // Array of Color IDs
-  colors: string[];
-
-  @Prop({ type: [String] }) // Array of Accessory IDs
-  accessories: string[];
-
-  @Prop({ type: [String] }) // Array of Feature IDs
-  features: string[];
+  hexCode: string;
 }
 
-export type VariantDocument = Variant & Document;
-export const VariantSchema = SchemaFactory.createForClass(Variant);
+export interface Feature {
+  type: 'image' | 'video';
+  mediaUrl: string;
+}
+
+export interface Variant {
+  name: string;
+  price: number;
+  colors: Color[];
+  accessories: string[];
+  features: Feature[];
+}
+
+// ✅ Main Model Interface
+export interface ModelDocument extends Document {
+  name: string;
+  brand: string;
+  description: string;
+  price: number;
+  variants: Variant[]; // ✅ EMBED Variants Here
+}
+
+// ✅ Schema Definitions
+const ColorSchema = new Schema<Color>({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  hexCode: { type: String, required: true }
+});
+
+const FeatureSchema = new Schema<Feature>({
+  type: { type: String, enum: ['image', 'video'], required: true },
+  mediaUrl: { type: String, required: true }
+});
+
+// ✅ Variant Schema (Embedded Inside Model)
+const VariantSchema = new Schema<Variant>({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  colors: [ColorSchema],
+  accessories: [{ type: String }],
+  features: [FeatureSchema]
+});
+
+// ✅ Model Schema (Embedding Variants)
+export const ModelSchema = new Schema<ModelDocument>({
+  name: { type: String, required: true },
+  brand: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  variants: { type: [VariantSchema], default: [] } // ✅ EMBED VARIANTS INSIDE MODELS
+});
+
+// ✅ Export Model
+export const Model = model<ModelDocument>('Model', ModelSchema);

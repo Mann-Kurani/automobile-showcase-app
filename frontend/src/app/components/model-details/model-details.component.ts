@@ -1,42 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule } from '@angular/common'; // ✅ Import CommonModule
+import { RouterModule } from '@angular/router'; // ✅ Import RouterModule
 
 @Component({
-  standalone: true, // ✅ Required for standalone components
   selector: 'app-model-details',
+  standalone: true, // ✅ Ensure it's standalone
   templateUrl: './model-details.component.html',
   styleUrls: ['./model-details.component.css'],
-  imports: [CommonModule] // ✅ Fix for *ngFor
+  imports: [CommonModule, RouterModule] // ✅ Add CommonModule for `*ngIf`, `*ngFor`
 })
 export class ModelDetailsComponent implements OnInit {
+  modelId: string | null = null;
   model: any;
-  modelId: string = '';
   variants: any[] = [];
-  features: any[] = [];
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location) {}
-
-  goBack(): void {
-    this.location.back(); // ✅ Navigates back to the previous page
-  }
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.modelId = this.route.snapshot.paramMap.get('id') || '';
+    this.modelId = this.route.snapshot.paramMap.get('modelId');
+    if (this.modelId) {
+      this.apiService.getModelDetails(this.modelId).subscribe({
+        next: (data: any) => { // ✅ Explicit type added
+          console.log('Model Data:', data);
+          this.model = data;
+          this.variants = data.variants || []; // ✅ Ensure `variants` exists
+        },
+        error: (error: any) => {
+          console.error('Error fetching model details:', error);
+        }
+      });
+    }
+  }
 
-    this.apiService.getModelDetails(this.modelId).subscribe({
-      next: (data) => {
-        console.log('Model Details:', data);
-        this.model = data;
-        this.variants = data.variants || [];
-        this.features = data.features || [];
-      },
-      error: (error) => {
-        console.error('Error fetching model details:', error);
-      }
-    });
+  goBack(): void {
+    history.back(); // ✅ Fix missing `goBack()` method
   }
 }
-

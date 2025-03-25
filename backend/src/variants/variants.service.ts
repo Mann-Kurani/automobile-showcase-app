@@ -2,16 +2,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Variant, VariantDocument } from './variants.model';
+import { Model as CarModel, ModelDocument } from '../models/models.model'; // ✅ Import Model Schema
 
 @Injectable()
 export class VariantsService {
-  constructor(@InjectModel(Variant.name) private variantModel: Model<VariantDocument>) {}
+  constructor(@InjectModel(Variant.name) private variantModel: Model<VariantDocument>,
+  @InjectModel(CarModel.name) private carModel: Model<ModelDocument>) {}
 
   // Create Variant
   async createVariant(data: any): Promise<VariantDocument> {
+    const modelExists = await this.carModel.findById(data.modelId).exec();
+    if (!modelExists) throw new NotFoundException('Model not found');
+
     const newVariant = new this.variantModel(data);
     return newVariant.save();
   }
+
 
   // Get All Variants
   async getAllVariants(): Promise<VariantDocument[]> {

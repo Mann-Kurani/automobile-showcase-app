@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ModelListComponent } from './components/model-list/model-list.component';
-import { ModelDetailsComponent } from './components/model-details/model-details.component';
+import { VariantDetailsComponent } from './components/variant-details/variant-details.component';
 
 const routes: Routes = [
   { path: '', component: ModelListComponent },
-  { path: 'model/:id', component: ModelDetailsComponent }
+  { path: 'model/:modelId/variant/:variantId', component: VariantDetailsComponent } // ✅ Route for Variant Details
 ];
 
 @NgModule({
