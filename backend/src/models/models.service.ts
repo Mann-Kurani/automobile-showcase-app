@@ -2,10 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Model as ModelEntity, ModelDocument } from './models.model';
+import { VariantDocument } from '../variants/variants.schema';
+import { FeatureDocument } from '../features/features.schema';
 
 @Injectable()
 export class ModelsService {
-  constructor(@InjectModel(ModelEntity.name) private modelModel: Model<ModelDocument>) {}
+  constructor(
+    @InjectModel('Model') private modelModel: Model<ModelDocument>,
+    @InjectModel('Variant') private variantModel: Model<VariantDocument>,
+    @InjectModel('Feature') private featureModel: Model<FeatureDocument>
+  ) {}
 
   // Create Model
   async createModel(data: any): Promise<ModelDocument> {
@@ -37,4 +43,24 @@ export class ModelsService {
     const result = await this.modelModel.findByIdAndDelete(id).exec();
     if (!result) throw new NotFoundException('Model not found');
   }
+
+  async getModelWithDetails(modelId: string) {
+    const model = await this.modelModel.findById(modelId).exec();
+
+    if (!model) return null;
+
+    const variants = await this.variantModel.find({ modelId }).exec();
+    const features = await this.featureModel.find({ modelId }).exec();
+
+    return {
+      ...model.toObject(),
+      variants,
+      features
+    };
+  }
 }
+
+
+
+
+

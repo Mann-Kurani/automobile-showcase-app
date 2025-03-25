@@ -14,6 +14,9 @@ export class Model extends Document {
 
   @Prop({ type: [{ type: String }] }) // Array of Variant IDs
   variants: string[];
+
+  // @Prop({ type: [{ type: Number }] }) // Array of Variant IDs
+  // price: number;
 }
 
 // Generate Mongoose schema

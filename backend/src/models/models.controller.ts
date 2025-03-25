@@ -20,7 +20,7 @@ export class ModelsController {
   // Get Model by ID
   @Get(':id')
   async getModelById(@Param('id') id: string) {
-    return this.modelsService.getModelById(id);
+    return this.modelsService.getModelWithDetails(id);
   }
 
   // Update Model
@@ -35,3 +35,5 @@ export class ModelsController {
     return this.modelsService.deleteModel(id);
   }
 }
+
+

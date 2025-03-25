@@ -1,7 +1,11 @@
-<h2>Available Car Models</h2>
-<ul>
-  <li *ngFor="let model of models">
-    <a [routerLink]="['/model', model._id]">{{ model.name }} - {{ model.brand }}</a>
-  </li>
-</ul>
+<h2>🚗 Available Car Models</h2>
 
+<div class="model-grid">
+  <div class="model-card" *ngFor="let model of models">
+    <h3>{{ model.name }}</h3>
+    <p><strong>Brand:</strong> {{ model.brand }}</p>
+    <p><strong>Description:</strong> {{ model.description }}</p>
+    <!-- <p><strong>Price:</strong> ${{ model.price }}</p> -->
+    <a [routerLink]="['/model', model._id]" class="view-button">View Details</a> <!-- ✅ Correct path -->
+  </div>
+</div>
