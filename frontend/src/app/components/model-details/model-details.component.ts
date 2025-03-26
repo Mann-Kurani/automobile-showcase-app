@@ -1,40 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { CommonModule } from '@angular/common'; // ✅ Import CommonModule
-import { RouterModule } from '@angular/router'; // ✅ Import RouterModule
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-model-details',
-  standalone: true, // ✅ Ensure it's standalone
+  standalone: true,
   templateUrl: './model-details.component.html',
   styleUrls: ['./model-details.component.css'],
-  imports: [CommonModule, RouterModule] // ✅ Add CommonModule for `*ngIf`, `*ngFor`
+  imports: [CommonModule, RouterModule], // ✅ Import CommonModule & RouterModule
 })
 export class ModelDetailsComponent implements OnInit {
-  modelId: string | null = null;
-  model: any;
-  variants: any[] = [];
+  model: any = {}; // ✅ Store Model Data
+  variants: any[] = []; // ✅ Fix: Initialize an empty array for variants
+  modelId: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.modelId = this.route.snapshot.paramMap.get('modelId');
+    this.modelId = this.route.snapshot.paramMap.get('id') || '';
     if (this.modelId) {
-      this.apiService.getModelDetails(this.modelId).subscribe({
-        next: (data: any) => { // ✅ Explicit type added
-          console.log('Model Data:', data);
-          this.model = data;
-          this.variants = data.variants || []; // ✅ Ensure `variants` exists
-        },
-        error: (error: any) => {
-          console.error('Error fetching model details:', error);
-        }
-      });
+      this.fetchModelDetails();
     }
   }
 
+  fetchModelDetails(): void {
+    this.apiService.getModelById(this.modelId).subscribe({
+      next: (data) => {
+        this.model = data;
+        this.variants = data.variants || []; // ✅ Ensure variants exist
+      },
+      error: (error) => {
+        console.error('Error fetching model details:', error);
+      }
+    });
+  }
+
+  // ✅ Fix: Add 'goBack()' Method
   goBack(): void {
-    history.back(); // ✅ Fix missing `goBack()` method
+    window.history.back();
   }
 }

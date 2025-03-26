@@ -1,0 +1,133 @@
+/* ✅ General Styles */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ✅ Title */
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  /* ✅ Variant Card */
+  .variant-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #f9f9f9;
+  }
+  
+  /* ✅ Variant Name */
+  .variant-card h3 {
+    margin: 0;
+    color: #222;
+    font-size: 20px;
+  }
+  
+  /* ✅ Color Options */
+  .color-list {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .color-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+  }
+  
+  /* ✅ Accessories */
+  .accessory-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .accessory-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+  }
+  
+  /* ✅ Features */
+  .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .feature-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+  }
+  
+  .feature-video {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  /* ✅ Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+  
+    .variant-card {
+      padding: 10px;
+    }
+  
+    .color-box {
+      width: 15px;
+      height: 15px;
+    }
+  
+    .accessory-img,
+    .feature-img,
+    .feature-video {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  
+  .back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #007bff; /* Blue color */
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    text-align: center;
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  

@@ -1,45 +1,65 @@
-<h2>🚗 Available Car Models</h2>
+<!-- <h2>🚗 Available Car Models</h2> -->
 
-<div class="model-grid">
-  <div class="model-card" *ngFor="let model of models">
-    <h3>{{ model.name }}</h3>
-    <p><strong>Brand:</strong> {{ model.brand }}</p>
-    <p><strong>Description:</strong> {{ model.description }}</p>
-    <p><strong>Price:</strong> ${{ model.price }}</p>
+<div class="container">
+  <h2>Car Models</h2>
 
-    <!-- ✅ Display Variants Inside Models -->
-    <div *ngIf="model.variants && model.variants.length > 0">
-      <h4>Variants:</h4>
-      <ul>
-        <li *ngFor="let variant of model.variants">
-          <p><strong>{{ variant.name }}</strong> - ${{ variant.price }}</p>
+  <ng-container *ngIf="models.length > 0; else noModels">
+    <div class="model-card" *ngFor="let model of models">
+      <h3>{{ model.name }}</h3>
+      <p><strong>Brand:</strong> {{ model.brand }}</p>
+      <p><strong>Description:</strong> {{ model.description }}</p>
+      <p><strong>Price:</strong> ${{ model.price }}</p>
 
-          <!-- ✅ Display Colors -->
-          <h5>🎨 Available Colors:</h5>
-          <ul>
-            <li *ngFor="let color of variant.colors">
-              {{ color.name }} ({{ color.hexCode }}) - ${{ color.price }}
-            </li>
-          </ul>
+      <!-- Details Button to Show Variants -->
+      <!-- <button (click)="toggleDetails(model._id)">Details</button> -->
+      <!-- Replace (click)="toggleDetails(model._id)" -->
+      <a [routerLink]="['/model', model._id, 'variants']">
+        <button>Details</button>
+      </a>
 
-          <!-- ✅ Display Accessories -->
-          <h5>🛠 Accessories:</h5>
-          <div class="accessory-gallery">
-            <img *ngFor="let accessory of variant.accessories" [src]="accessory" alt="Accessory">
-          </div>
+      <!-- Variant Details -->
+      <div *ngIf="selectedModelId === model._id">
+        <h4>Variants:</h4>
+        <ul>
+          <li *ngFor="let variant of model.variants">
+            <strong>{{ variant.name }}</strong> - ${{ variant.price }}
 
-          <!-- ✅ Display Features -->
-          <h5>📸 Features:</h5>
-          <div class="feature-gallery">
-            <ng-container *ngFor="let feature of variant.features">
-              <img *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" alt="Feature Image">
-              <video *ngIf="feature.type === 'video'" controls>
-                <source [src]="feature.mediaUrl" type="video/mp4">
-              </video>
-            </ng-container>
-          </div>
-        </li>
-      </ul>
+            <div>
+              <h5>Colors:</h5>
+              <ul>
+                <li *ngFor="let color of variant.colors">
+                  <span [style.color]="color.hexCode">{{ color.name }}</span> - ${{ color.price }}
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h5>Accessories:</h5>
+              <div class="accessory-list">
+                <img *ngFor="let accessory of variant.accessories" [src]="'http://localhost:3000' + accessory" alt="Accessory" class="accessory-img" />
+              </div>
+            </div>
+
+            <div>
+              <h5>Features:</h5>
+              <div class="feature-list">
+                <ng-container *ngFor="let feature of variant.features">
+                  <img *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" alt="Feature Image" class="feature-img" />
+                  <video *ngIf="feature.type === 'video'" controls class="feature-video">
+                    <source [src]="feature.mediaUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </ng-container>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </ng-container>
+
+  <!-- No Models Fallback -->
+  <ng-template #noModels>
+    <p>No models available. Please check your database.</p>
+  </ng-template>
 </div>

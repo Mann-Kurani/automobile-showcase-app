@@ -1,4 +1,4 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model, Types } from 'mongoose';
 
 // ✅ Define Sub-Schemas (Embedded inside Variant)
 export interface Color {
@@ -22,19 +22,23 @@ export interface VariantDocument extends Document {
 
 // ✅ Main Model Interface
 export interface ModelDocument extends Document {
-  _id: string;
   name: string;
   brand: string;
   description: string;
   price: number;
+  variants: VariantDocument[]; // ✅ Ensure it holds referenced Variant objects
 }
 
-// ✅ Model Schema (Stores Variant References)
+// ✅ Schema Definition
 export const ModelSchema = new Schema<ModelDocument>({
   name: { type: String, required: true },
   brand: { type: String, required: true },
   description: { type: String, required: true },
-  price: { type: Number, required: true }
+  price: { type: Number, required: true },
+  variants: [{ type: Schema.Types.ObjectId, ref: 'Variant' }] // ✅ Reference to Variant collection
 });
+
+
+
 // ✅ Export Model
 export const Model = model<ModelDocument>('Model', ModelSchema);

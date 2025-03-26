@@ -1,33 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-model-list',
   standalone: true,
+  imports: [CommonModule, RouterModule, HttpClientModule],
   templateUrl: './model-list.component.html',
-  styleUrls: ['./model-list.component.css'],
-  imports: [CommonModule, RouterModule]
+  styleUrls: ['./model-list.component.css']
 })
-export class ModelListComponent implements OnInit {
+export class ModelListComponent {
   models: any[] = [];
+  selectedModelId: string | null = null; // ✅ Initialize selectedModelId
 
   constructor(private apiService: ApiService) {}
 
-  ngOnInit(): void {
-    this.fetchModels();
+  ngOnInit() {
+    this.apiService.getModels().subscribe(data => {
+      this.models = data;
+    });
   }
 
-  fetchModels(): void {
-    this.apiService.getModels().subscribe({
-      next: (data) => {
-        console.log('Fetched Models:', data);
-        this.models = data; // ✅ Ensure models have variants inside
-      },
-      error: (error) => {
-        console.error('Error fetching models:', error);
-      }
-    });
+  // ✅ Toggle selected model
+  toggleDetails(modelId: string) {
+    this.selectedModelId = this.selectedModelId === modelId ? null : modelId;
   }
 }

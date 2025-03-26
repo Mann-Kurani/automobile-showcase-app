@@ -1,33 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // ✅ Import this
 
 @Component({
+  standalone: true,
   selector: 'app-variant-details',
   templateUrl: './variant-details.component.html',
-  styleUrls: ['./variant-details.component.css']
+  styleUrls: ['./variant-details.component.css'],
+  imports: [CommonModule, RouterModule]
 })
 export class VariantDetailsComponent implements OnInit {
-  variant: any;
+  private route = inject(ActivatedRoute);
+  private apiService = inject(ApiService);
+  
+  modelId: string = '';
+  modelName: string = ''; // ✅ Store model name
+  variants: any[] = [];
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  ngOnInit() {
+    this.modelId = this.route.snapshot.paramMap.get('id') || '';
 
-  ngOnInit(): void {
-    this.fetchVariant();
+    if (this.modelId) {
+      this.fetchVariants();
+    }
   }
 
-  fetchVariant(): void {
-    const variantId = this.route.snapshot.paramMap.get('variantId');
-    if (variantId) {
-      this.apiService.getVariant(variantId).subscribe({
-        next: (data) => {
-          console.log('Variant Data:', data);
-          this.variant = data;
-        },
-        error: (error) => {
-          console.error('Error fetching variant:', error);
-        }
-      });
-    }
+  fetchVariants() {
+    this.apiService.getModelById(this.modelId).subscribe({
+      next: (model) => {
+        this.modelName = model.name || 'Unknown Model'; // ✅ Ensure model name exists
+        this.variants = model.variants || [];
+      },
+      error: (err) => console.error('Error fetching variants:', err)
+    });
   }
 }

@@ -1,27 +1,32 @@
-<div *ngIf="variant">
-    <h2>🚘 {{ variant.name }} Details</h2>
-    <p><strong>Price:</strong> ${{ variant.price }}</p>
-  
-    <h3>🎨 Available Colors:</h3>
+<h2>Variants for {{ modelName }}</h2>
+
+<ul>
+  <li *ngFor="let variant of variants">
+    <h3>{{ variant.name }} - ${{ variant.price }}</h3>
+
+    <h4>Colors:</h4>
     <ul>
-      <li *ngFor="let color of variant.colors" [style.color]="color.hexCode">
-        {{ color.name }} - ${{ color.price }}
+      <li *ngFor="let color of variant.colors">
+        <span [style.color]="color.hexCode">{{ color.name }}</span> - ${{ color.price }}
       </li>
     </ul>
-  
-    <h3>🛠 Accessories:</h3>
-    <div class="accessories">
-      <img *ngFor="let accessory of variant.accessories" [src]="accessory" alt="Accessory" />
+
+    <h4>Accessories:</h4>
+    <div class="accessory-list">
+      <img *ngFor="let accessory of variant.accessories" [src]="accessory" alt="Accessory" class="accessory-img" />
     </div>
-  
-    <h3>📸 Features:</h3>
-    <div class="features">
-      <img *ngFor="let feature of variant.features" *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" alt="Feature Image" />
-      <video *ngFor="let feature of variant.features" *ngIf="feature.type === 'video'" controls>
-        <source [src]="feature.mediaUrl" type="video/mp4">
-      </video>
+
+    <h4>Features:</h4>
+    <div class="feature-list">
+      <ng-container *ngFor="let feature of variant.features">
+        <img *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" alt="Feature Image" class="feature-img" />
+        <video *ngIf="feature.type === 'video'" controls class="feature-video">
+          <source [src]="feature.mediaUrl" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </ng-container>
     </div>
-  
-    <a routerLink="/">🔙 Back to Models</a>
-  </div>
-  
+  </li>
+</ul>
+
+<a [routerLink]="['/']" class="back-button">Back to Models</a>
