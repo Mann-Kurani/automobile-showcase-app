@@ -1,27 +1,36 @@
 <h2>Variants for {{ modelName }}</h2>
 
-<ul>
-  <li *ngFor="let variant of variants">
+<div class="variant-container">
+  <div class="variant-card" *ngFor="let variant of variants">
     <h3>{{ variant.name }} - ${{ variant.price }}</h3>
 
+    <!-- Colors -->
     <h4>Colors:</h4>
-    <ul>
-      <li *ngFor="let color of variant.colors" class="color-item">
+    <div class="color-list">
+      <div *ngFor="let color of variant.colors" class="color-item">
         <span class="color-box" [style.background-color]="color.hexCode"></span>
         {{ color.name }} - ${{ color.price }}
-      </li>
-    </ul>
+      </div>
+    </div>
 
+    <!-- Accessories -->
     <h4>Accessories:</h4>
     <div class="accessory-list">
-      <img *ngFor="let accessory of variant.accessories" [src]="'http://localhost:3000' + accessory" alt="Accessory" class="accessory-img" />
+      <img *ngFor="let accessory of variant.accessories" 
+           [src]="'http://localhost:3000' + accessory" 
+           alt="Accessory" 
+           class="accessory-img" />
     </div>
 
+    <!-- Features -->
     <h4>Features:</h4>
     <div class="feature-list">
-      <img *ngFor="let feature of variant.features" [src]="'http://localhost:3000' + feature" alt="Feature" class="feature-img" />
+      <img *ngFor="let feature of variant.features" 
+           [src]="'http://localhost:3000' + feature" 
+           alt="Feature" 
+           class="feature-img" />
     </div>
-  </li>
-</ul>
+  </div>
+</div>
 
 <a [routerLink]="['/']" class="back-button">Back to Models</a>
