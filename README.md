@@ -12,6 +12,7 @@ This is a web-based automobile showcase application that allows users to browse 
 ## Tech Stack
 - **Frontend:** Angular 19.2.4, TypeScript, HTML, CSS
 - **Backend:** Node.js (v22.14.0)
+- **Database**: MongoDB
 - **Package Manager:** npm (v10.9.2)
 
 ## Setup and Installation
