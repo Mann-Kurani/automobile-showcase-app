@@ -6,25 +6,20 @@
 
     <h4>Colors:</h4>
     <ul>
-      <li *ngFor="let color of variant.colors">
-        <span [style.color]="color.hexCode">{{ color.name }}</span> - ${{ color.price }}
+      <li *ngFor="let color of variant.colors" class="color-item">
+        <span class="color-box" [style.background-color]="color.hexCode"></span>
+        {{ color.name }} - ${{ color.price }}
       </li>
     </ul>
 
     <h4>Accessories:</h4>
     <div class="accessory-list">
-      <img *ngFor="let accessory of variant.accessories" [src]="accessory" alt="Accessory" class="accessory-img" />
+      <img *ngFor="let accessory of variant.accessories" [src]="'http://localhost:3000' + accessory" alt="Accessory" class="accessory-img" />
     </div>
 
     <h4>Features:</h4>
     <div class="feature-list">
-      <ng-container *ngFor="let feature of variant.features">
-        <img *ngIf="feature.type === 'image'" [src]="feature.mediaUrl" alt="Feature Image" class="feature-img" />
-        <video *ngIf="feature.type === 'video'" controls class="feature-video">
-          <source [src]="feature.mediaUrl" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </ng-container>
+      <img *ngFor="let feature of variant.features" [src]="'http://localhost:3000' + feature" alt="Feature" class="feature-img" />
     </div>
   </li>
 </ul>

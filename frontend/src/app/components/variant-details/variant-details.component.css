@@ -42,15 +42,16 @@
   .color-item {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px; /* Space between color box and name */
   }
   
   .color-box {
     width: 20px;
     height: 20px;
-    border-radius: 50%;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
+  
   
   /* ✅ Accessories */
   .accessory-list {

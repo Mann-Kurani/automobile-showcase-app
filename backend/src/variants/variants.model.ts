@@ -27,7 +27,7 @@ export const VariantSchema = new Schema<Variant>({
   price: { type: Number, required: true },
   colors: [{ name: String, price: Number, hexCode: String }],
   accessories: [{ type: String }],
-  features: [{ type: { type: String, enum: ['image', 'video'] }, mediaUrl: String }]
+  features: [{ type: String }],
 });
 
 // ✅ Explicitly Export Model & Schema
