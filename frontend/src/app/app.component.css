@@ -1,0 +1,19 @@
+/* Navbar Styling */
+.navbar {
+    background: #1b4365;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Ensure consistent height */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    text-align: center;
+  }
+  
